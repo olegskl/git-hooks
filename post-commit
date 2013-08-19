@@ -25,11 +25,11 @@ RESULT=$(git archive --format zip --output "$OUTPUT" "$BRANCH_NAME" 2>&1 > /dev/
 
 # Checking for the most recent exit code (the one of git archive):
 if [[ $? -eq 0 ]]; then
-	printf "\033[1;32mdone\033[0m.\n"
+    printf "\033[1;32mdone\033[0m.\n"
 else
-	printf "\033[1;31mfailed\033[0m.\n"
-	echo $RESULT
-	# no need to exit here, error not critical
+    printf "\033[1;31mfailed\033[0m.\n"
+    echo $RESULT
+    # no need to exit here, error not critical
 fi
 
 # ================================= BACK UP ================================== #
@@ -42,26 +42,26 @@ REMOTES=$(git remote | grep ^backup-auxto-)
 
 # Output a warning in case no auto backup remotes are specified:
 if [[ ! -n "$REMOTES" ]]; then
-	printf "\033[33mno backup-auto-* remotes defined\033[0m.\n"
+    printf "\033[33mno backup-auto-* remotes defined\033[0m.\n"
 else
-	printf "\n"
+    printf "\n"
 
-	# Mirror push to every auto backup remote:
-	for REMOTE in "$REMOTES"; do
-		printf "   $REMOTE... "
+    # Mirror push to every auto backup remote:
+    for REMOTE in "$REMOTES"; do
+        printf "   $REMOTE... "
 
-		# Execute the push command and capture stderr: 
-		RESULT=$(git push $REMOTE --mirror 2>&1 > /dev/null)
+        # Execute the push command and capture stderr: 
+        RESULT=$(git push $REMOTE --mirror 2>&1 > /dev/null)
 
-		# Checking for the most recent exit code (the one of git push):
-		if [[ $? -eq 0 ]]; then
-			printf "\033[1;32mdone\033[0m.\n"
-		else
-			printf "\033[1;31mfailed\033[0m.\n"
-			echo $RESULT
-			# no need to exit here, error not critical
-		fi
-	done
+        # Checking for the most recent exit code (the one of git push):
+        if [[ $? -eq 0 ]]; then
+            printf "\033[1;32mdone\033[0m.\n"
+        else
+            printf "\033[1;31mfailed\033[0m.\n"
+            echo $RESULT
+            # no need to exit here, error not critical
+        fi
+    done
 fi
 
 # ================================= THE END ================================== #
